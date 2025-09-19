@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dijkstra Shortest Paths</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script defer src="script.js"></script>
+    <style>
+        /* Fallback minimal styling if styles.css doesn't load */
+        body{font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; padding:24px; background:#0b1020; color:#e6e9ef}
+        .card{max-width:980px; margin:0 auto; background:#121a33; border:1px solid #263157; border-radius:12px; padding:20px}
+        h1{font-size:20px; margin:0 0 12px 0}
+        label{font-weight:600; display:block; margin:14px 0 6px}
+        textarea, input, select{width:100%; box-sizing:border-box; padding:10px; border-radius:8px; border:1px solid #2e3b68; background:#0f152b; color:#e6e9ef}
+        .row{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+        .actions{display:flex; gap:10px; margin-top:16px}
+        button{background:#3b82f6; color:white; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:600}
+        button.secondary{background:#27314e}
+        .result{margin-top:18px; background:#0f152b; border:1px solid #2e3b68; border-radius:8px; padding:12px; white-space:pre-wrap}
+        .hint{color:#aab3cf; font-size:12px}
+        .inline{display:flex; align-items:center; gap:8px}
+    </style>
+    <script>
+      // Ensure script.js is loaded before inline usage if needed.
+    </script>
+    <meta name="description" content="Interactive Dijkstra's algorithm: enter vertices and weighted edges to compute shortest distances from a source." />
+    <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" content="#0b1020">
+</head>
+<body>
+    <div class="card">
+        <h1>Dijkstra's Algorithm - Shortest Paths</h1>
+        <p class="hint">Enter a list of vertex labels, the weighted edges, choose directed or undirected, select the source, then compute shortest distances.</p>
+
+        <label for="vertices">Vertices (space separated)</label>
+        <textarea id="vertices" rows="2" placeholder="e.g. A B C D"></textarea>
+
+        <div class="row">
+            <div>
+                <label for="edges">Edges (one per line: u v w)</label>
+                <textarea id="edges" rows="8" placeholder="e.g.&#10;A B 1&#10;B C 2&#10;A C 4&#10;C D 1&#10;B D 5"></textarea>
+            </div>
+            <div>
+                <label>Options</label>
+                <div class="inline" style="margin:8px 0 12px">
+                    <input type="checkbox" id="directed" />
+                    <label for="directed" style="margin:0">Directed graph</label>
+                </div>
+
+                <label for="source">Source vertex</label>
+                <select id="source">
+                    <option value="">-- select after entering vertices --</option>
+                </select>
+
+                <div class="actions">
+                    <button id="populate-demo" class="secondary" type="button">Load Demo</button>
+                    <button id="compute" type="button">Compute Shortest Distances</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="messages" class="hint" style="margin-top:10px"></div>
+        <div id="output" class="result" style="display:none"></div>
+
+        <label>Graph Visualization</label>
+        <div class="vis-wrap">
+            <div class="vis-controls">
+                <button id="vis-start" type="button">Start</button>
+                <button id="vis-pause" class="secondary" type="button">Pause</button>
+                <button id="vis-reset" class="secondary" type="button">Reset</button>
+                <div style="flex:1"></div>
+                <span class="hint">Speed</span>
+                <input id="vis-speed" type="range" min="0" max="1000" value="400" />
+                <div style="width:12px"></div>
+                <button id="show-spt" class="secondary" type="button" title="Show shortest-path tree">Show SPT</button>
+                <button id="clear-highlight" class="secondary" type="button">Clear</button>
+                <label class="inline hint" style="gap:6px; margin-left:10px"><input id="edit-mode" type="checkbox"/> Edit edges</label>
+                <button id="export-json" class="secondary" type="button">Export</button>
+                <button id="import-json" class="secondary" type="button">Import</button>
+            </div>
+            <canvas id="vis-canvas" width="900" height="420"></canvas>
+            <div class="legend hint">
+                <span class="dot dot-edge"></span> edge
+                <span class="dot dot-relax"></span> relaxing
+                <span class="dot dot-visited"></span> visited
+                <span class="dot dot-source"></span> source
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
